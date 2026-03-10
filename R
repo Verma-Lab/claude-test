@@ -1,0 +1,13 @@
+
+
+Create a Git Repo (if not exist) [Got to github VLOrg]
+
+On VS Code Clone the Repo
+
+Edit code/save commit to git 
+
+------------
+If running on Monza
+Login to monza
+git clone the repo
+run the analysis/script
