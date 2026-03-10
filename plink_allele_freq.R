@@ -10,7 +10,6 @@
 #     --out <output_prefix>        # output file prefix
 #     [--plink2 <path>]            # path to plink2 binary (default: plink2)
 #     [--maf-filter <value>]       # optional MAF filter threshold (e.g. 0.01)
-#     [--keep <sample_file>]       # optional file of samples to include
 
 suppressPackageStartupMessages({
   library(optparse)
@@ -32,9 +31,7 @@ option_list <- list(
   make_option("--plink2",     type = "character", default = "plink2",
               help = "Path to plink2 binary [default: plink2]"),
   make_option("--maf-filter", type = "double",    default = NULL,
-              help = "Minor allele frequency filter threshold"),
-  make_option("--keep",       type = "character", default = NULL,
-              help = "File of samples to include (FID IID, one per line)")
+              help = "Minor allele frequency filter threshold")
 )
 
 opt <- parse_args(OptionParser(option_list = option_list))
@@ -61,9 +58,6 @@ if (!is.null(opt$vcf) && !file.exists(opt$vcf))
   errors <- c(errors, sprintf("VCF file not found: %s", opt$vcf))
 if (!is.null(opt$variants) && !file.exists(opt$variants))
   errors <- c(errors, sprintf("Variant list file not found: %s", opt$variants))
-if (!is.null(opt$keep) && !file.exists(opt$keep))
-  errors <- c(errors, sprintf("Sample keep file not found: %s", opt$keep))
-
 if (length(errors) > 0) {
   cat("ERROR(s):\n")
   cat(paste0("  ", errors, "\n"), sep = "")
@@ -92,7 +86,6 @@ args <- c(args,
   "--no-psam-pheno"
 )
 
-if (!is.null(opt$keep))        args <- c(args, "--keep", opt$keep)
 if (!is.null(opt[["maf-filter"]])) args <- c(args, "--maf", opt[["maf-filter"]])
 
 cmd <- paste(c(shQuote(opt$plink2), args), collapse = " ")
